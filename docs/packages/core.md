@@ -1,11 +1,10 @@
 # Core: [ory-editor-core](https://www.npmjs.com/package/ory-editor-core)
 
-The core is the main system of the ORY Editor. It contains the logic for creating and modifying
-layouts and is responsible for handling plugins.
+Core 内核是 ORY Editor 的主系统。它包含创建和修改布局的逻辑和对组件操作的响应。
 
-## Getting started
+## 快速开始
 
-The ORY Editor uses a Redux store to manage the internal state. When creating a new `Editor` instance
+ORY Editor 使用 Redux store 来管理内部状态。创建一个编辑器实例：
 
 ```jsx
 import Editor from 'ory-editor-core'
@@ -13,8 +12,7 @@ import Editor from 'ory-editor-core'
 const editor = new Editor()
 ```
 
-the Redux store is created as well. Because of this, it is important to only instantiate the Editor once in your
-application lifetime (this is called the *singleton* pattern).
+Redux store 将被同步创建。因此,  不能在一个应用生命周期里创建多个编辑器实例（必须是单例模式）
 
 ```jsx
 import Editor from 'ory-editor-core'
@@ -23,23 +21,26 @@ const editor = new Editor()
 const editor2 = new Editor() // Don't do this.
 ```
 
-## Adding plugins
+## 添加插件
 
-Now we know how to create an empty editor. Let's add some plugins as well. We will use plugins available from the ORY
-Editor repository. We call those plugins "ory plugins" because they are written and maintained by us.
+现在我们已经知道如何创建一个空的编辑器。接下来我们添加一些插件。我们将使用 ORY Editor 仓库中已经存在的插件。我们把这些插件叫做 ORY 插件，因为他们由我们编写和维护。
 
-Let's take an image plugin for starter. The image plugin is a simple content plugin that allows you to add an image
-by pointing the plugin to an image URL. It does not support uploading images at the moment.
+我们首先尝试图片插件（image plugin）。这是一个简单的内容插件，你可以指定一个图片地址（URL）。当前它还不支持图片上传。
 
 <p>
   <figure align="center">
-    <img alt="A content cell" src="/images/content-cell.png"><br>
+    <img alt="A content cell" src="../images/content-cell.png"><br>
     <figcaption align="center"><em>ory image plugin</em></figcaption>
   </figure>
 </p>
 
-To install the image plugin, we use npm: `npm install ory-editor-plugins-image`. Next, we need to add it
-to our editor instance:
+为了安装图片插件，需要使用 npm:
+
+```shell
+npm install ory-editor-plugins-image
+```
+
+然后把它添加到编辑器实例:
 
 ```jsx
 import Editor from 'ory-editor-core'
@@ -232,7 +233,7 @@ const editor = new Editor({
 
 or use the `trigger` API.
 
-```jsx
+​```jsx
 // const editor = new Editor( ...
 
 const editable = loadFromBackend() // just an example

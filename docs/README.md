@@ -1,46 +1,39 @@
-# Introduction
+# 简介
 
-Welcome to the ORY Editor guide. Please be aware that the ORY Editor requires substantial knowledge of ReactJS, build tools
-like webpack, and ES6. If you lack this knowledge ask in our [Chat](https://gitter.im/ory-am/editor) for help.
+欢迎来到 ORY 编辑器指南。请先知悉使用 ORY 编辑器需要熟悉 ReactJS 知识，比如 webpack 工具， ES6。 如果你缺乏这些知识可以在 [Chat](https://gitter.im/ory-am/editor) 寻求帮助。
 
-## Demonstration
+## 示范
 
-Seeing is believing, so let's start with a demo!
+眼见为实，让我们从一个 Demo 开始。
 
 ![ORY Editor Demo](./images/inline-edit-md.gif)
 
-A demo available at [editor.ory.sh](https://editor.ory.sh/) so go ahead and try it yourself!
+这里有一个 demo，请自行尝试 [editor.ory.sh](https://editor.ory.sh/) 
 
-## Why it's different
+## ORY 编辑器的不同之处
 
-Before founding ORY, we built something [like the Wikipedia](https://de.serlo.org), but for learning. The content is
-crowd sourced and over half a million people use this platform every month. We had to realize that existing open source
-content editing solutions had one of the three flaws:
+为了学习， 我们创建像[维基百科](https://de.serlo.org)这样的网站。它的内容来自互联网用户，每月有超过 50 万的人使用这个平台。我们意识到现有的开源内容编辑器解决方案通常有下面三个缺陷的一个或多个。
 
-1. The produced markup was horrific, a lot of sanitation had to take place and XSS is always a threat.
-2. The author must learn special mark up, like markdown, before being able to produce content. These text-based solutions
-are usually unable to specify a layout and complex data structures like tables are annoying to edit.
-3. Promising libraries potentially solving the above where abandoned by their maintainers, because it started as a special
-use case, or a free-time project.
+- 产生大量的标记，必须进行大量的清理工作，同时 XSS  的威胁总是存在。
+- 在制作内容以前，作者需要学习特殊的标记语言，比如 markdown。这些基于文本的解决方案通常无法指定布局，像表这样复杂的数据结构编辑起来很麻烦。
+- 无法使用布局（如 flexbox 或 grids）
 
-We concluded that a solution must meet the following principles:
+我的结论是，解决方案必须符合以下原则：
 
-1. The state is a normalized JSON object, no HTML involved.
-2. It is a visual editor that does not require programming experience or special training.
-3. It is built by a company, reducing the likelihood of abandonment.
-4. Based on reusable React Components, it gives developers, authors and designers new ways of working together and creating
-better and richer experiences more easily.
-5. It works on mobile and touch devices.
+- 状态使用规范的 json, 不牵涉 HTML。
+- 它是一个不需要编程经验和特殊训练的虚拟编辑器。
+- 基于可服用的 React 组件。 让开发，作者和设计人员以一种更好的方式在一起工作。
+- 可以在移动手机和触摸设备上使用.
 
-With these principles in mind, we went out and implemented the ORY Editor, which you are looking at right now.
+基于这些原则，我出实现 ORY 编辑器，你现在看到的就是它。
 
-## How it works
+## ORY 编辑器是如何工作的
 
-The ORY Editor is primarily a tool to create and modify layouts. At the core, there are *Cells* and *Rows*. The layout
-system is very similar to the [bootstrap grid system](http://getbootstrap.com/css/#grid) where you have
-rows and columns.
+ORY 编辑器主要提供了一个创建和编辑布局的工具。在它的核心结构里面，他们是 Cells 和 Rows。布局系统和 Bootstrap 的栅格系统非常相似。
 
 An exemplary structure of an editable (other editors call this "document") could be the following:
+
+下面是一个可编辑的模范结构树（其他编辑器把他叫做文档）
 
 ```
 1. Editable
@@ -56,26 +49,24 @@ An exemplary structure of an editable (other editors call this "document") could
   | |-2. Cell (image)
 ```
 
-There are four distinct data types:
+四种数据类型
 
-1. **Editable** (`1.` in the tree) - the editable is a container for cells and rows. You can have multiple editables
-on a page and it is possible to drag and drop cells from one editable to another.
-2. **Container cell** (`1.1` in the tree) - the container cell is a cell without a plugin and gives structure to the tree.
-These cells are generated automatically when required and also removed automatically when no longer required.
-3. **Content cell** (`1.1.1`, `1.2.1`, ... in the tree) - the content cell is always a leaf in the tree (it has no children) and its
-behaviour is defined by a **content plugin** (which can be written by you or downloaded from npm). A content plugin is usually something
-like rich text, video, audio, a soundcloud widget and so on.
-4. **Layout cell** - the layout cell contains a list of nested cells and rows (container, content, layout). The idea of the
-layout cell is that it gives its children a layout (e.g. a parallax background, a spoiler box, a box where all text is red).
-What the layout looks like is defined by by a **layout plugin**. A layout cell must always have at least one child or
-it will be automatically removed.
+​	**Editable 可编辑内容**（模范结构树中的 1.）-  可编辑内容是一个包含单元格和行的容器，你可以在一个页面里包含多个可编辑内容，把一个单元格拖拽到另一个可编辑内容是可以的
+
+​	**Container cell 容器单元格** (模范结构树中的 `1.1`) - 容器单元格是模范结构树中的一个不带插件的容器单元。它在需要的时候被自动生成，在不需要的的时候被自动移除。
+
+​	**Content cell 内容单元格** (模范结构树中的 `1.1.1`, `1.2.1`, ... ) - 内容单元格通常是模范结构树中的叶子节点 (没有子节点) ，他的行为由内容插件（content plugin）定义（你可以自定义内容插件或从 npm 下载）。 内容插件通常是富文本，音频，视频，声云插件等组件。
+
+​	**Layout cell 布局单元格** -   布局单元格包含一组嵌套的行（Rows）和单元格（Cell）(容器, 内容, 布局)。他的作用是给它包含的内容一个布局(如视差背景, 扰流框,红色的文本框等)。布局单元格通常至少包含一个子元素，否则它将被自动移除。布局单元格由布局插件定义。
+
 
 <p>
   <figure align="center">
     <img alt="A content cell" src="./images/content-cell.png"><br>
-    <figcaption align="center"><em>A content cell with the image plugin</em></figcaption>
+    <figcaption align="center"><em>A content cell with the image plugin</em>	</figcaption>
   </figure>
 </p>
+
 
 <p>
   <figure align="center">
@@ -83,9 +74,4 @@ it will be automatically removed.
     <figcaption align="center"><em>A layout cell with a switchable background image plugin</em></figcaption>
   </figure>
 </p>
-
-The grid system is baked into the ORY Editor. It takes care of any drag and drop logic, resizing, focus detection and so
-on. As a developer, you will primarily extend the functionality using layout and content plugins. Additionally,
-the editor takes care of the whole data model. The plugins are just simple ReactJS components that receive
-properties such as `onChange`, `readOnly`, `state` by the editor. You will learn in later sections how plugins
-work exactly, what their API looks like, and also how to write your own.
+一个栅格系统被植入到 ORY 编辑器。它负责所有的拖拽逻辑，大小重置，焦点侦测等。作为一个开发者，你主要是通过布局和内容插件来扩展功能。此外，编辑器关注全局的数据模型。插件仅仅是一个简单的 ReactJS 组件，它通过编辑器的 onChange`, `readOnly`, `state` 接收属性。你将在最后一个章节学习到插件是如何精密工作的，他们的 API 是什么样和如何开发一个自己的插件。
